@@ -5,9 +5,18 @@ import './App.css'
 
 function Box() {
   return (
-    <mesh> // define mesh - equivalent to new THREE.Mesh()
+    <mesh position={[-2, 1, 2]}> // define mesh - equivalent to new THREE.Mesh() - with position prop
       <boxBufferGeometry attach="geometry" /> // define boxBufferGeometry
-      <meshLambertMaterial attach="material" color="red" /> // define meshLambertMaterial
+      <meshLambertMaterial attach="material" color="darkred" /> // define meshLambertMaterial
+    </mesh>
+  );
+}
+
+function Plane() {
+  return (
+    <mesh position={[0, 0, 0]} rotation={[-Math.PI / 2, 0, 0]}> // define mesh with position and rotation props
+      <planeBufferGeometry attach="geometry" args={[100, 100]}/> // define planeBufferGeometry
+      <meshLambertMaterial attach="material" color="darkgrey" /> // define meshLambertMaterial
     </mesh>
   );
 }
@@ -21,7 +30,8 @@ function App() {
       <OrbitControls /> // define OrbitControls
       <ambientLight intensity={0.5} /> // define ambientLight
       <spotLight position={[10, 15, 10]} angle={0.3} /> // define spotLight with position and angle props
-      <Box /> // define Box
+      <Box /> // define 
+      <Plane />
     </Canvas>
   );
 }
