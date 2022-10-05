@@ -1,21 +1,38 @@
 import { Canvas } from '@react-three/fiber';
+// useful helpers for react-three-fiber
 import { OrbitControls, Stars, PerspectiveCamera } from "@react-three/drei";
-import './App.css'
+import './App.css';
+// physics library "cannon" - physics based hooks
 import { Physics, useBox, usePlane } from '@react-three/cannon';
 
 
 function Box() {
   // use canon hook
-  const [ref] = useBox(() => ({ 
+  {/*
+      useBox is physics-only, it comes from the physics library "cannon".
+      It approximates a shape and links it to arbitrary geometry. The physics
+      engine now manages a literal box, a cube, and subjects it to gravity and other.
+      Pick a shape that suits your objects contact surface, it could be a box, plane, sphere, etc.
+      (if your shape resembles something like a sphere you'd use useSphere instead and so on.) 
+      Give it a mass.
+  */}
+  // get a ref to the physics box representation - use useBox() then give it a callback, from this callback
+  // we return an object that has props: position, mass (it will now be affected by gravity)
+   const [ref, api] = useBox(() => ({ 
     mass: 2, 
     position: [0, 12, 0]
   }));
 
   return (
     // define mesh - equivalent to new THREE.Mesh()
+    // tie mesh to the reference you have just received. It will now be affected by gravity 
+    // and other objects inside the physics world.
     <mesh 
       ref={ref}
       position={[0, 12, 0]}
+      onClick={() => {
+        api.velocity.set(0, 6, 0);
+      }}
     > 
       <boxBufferGeometry attach="geometry" /> // define boxBufferGeometry
       <meshLambertMaterial attach="material" color="darkred" /> // define meshLambertMaterial
@@ -25,12 +42,16 @@ function Box() {
 
 function Plane() {
   // use canon hook
+  // get a ref to the physics plane representation - use usePlane() then give it a callback, from this callback
+  // we return an object that has props: rotation
   const [ref] = usePlane(() => ({
     rotation: [-Math.PI / 2, 0, 0]
   }));
 
   return (
-     // define mesh
+    // define mesh
+    // tie mesh to the reference you have just received. It will now be affected by gravity 
+    // and other objects inside the physics world.
     <mesh 
       ref={ref}
       rotation={[-Math.PI / 2, 0, 0]}
