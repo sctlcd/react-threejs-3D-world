@@ -33,7 +33,7 @@ body {
   display: flex;
   flex-direction: column;
   background-color: #d2d2d2;
-  top: 1rem;
+  top: 0.5rem;
   left: 0.5rem;
   border: 0.125rem solid #545454;
   overflow: hidden;
