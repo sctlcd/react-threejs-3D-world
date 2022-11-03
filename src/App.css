@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+
 * {
   box-sizing: border-box;
 }
@@ -29,7 +31,7 @@ body {
 }
 
 .controls {
-  font-family: var(--vt323);
+  font-family: 'Audiowide', cursive;
   display: flex;
   flex-direction: column;
   background-color: #d2d2d2;
@@ -107,7 +109,7 @@ body {
 @media only screen and (max-width: 992px){
   .controls {
     font-size: 0.8rem;
-    width: 25%;
+    width: 27%;
   }
 
   .controls .toggle {
@@ -124,7 +126,7 @@ body {
 @media only screen and (max-width: 600px){
   .controls {
     font-size: 0.7rem;
-    width: 25%;
+    width: 30%;
   }
 
   .controls .toggle {
@@ -141,7 +143,7 @@ body {
 @media only screen and (max-width: 470px){
   .controls {
     font-size: 0.6rem;
-    width: 30%;
+    width: 37%;
   }
 
   .controls .toggle {
