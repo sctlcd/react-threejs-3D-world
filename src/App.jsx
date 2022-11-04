@@ -1,117 +1,14 @@
-import { useState } from 'react';
 // a React renderer for Three.js
 import { Canvas } from '@react-three/fiber';
 // useful helpers for react-three-fiber
 import { OrbitControls, Stars, PerspectiveCamera } from '@react-three/drei';
 // physics library 'cannon' - physics based hooks
-import { Physics, useBox, usePlane } from '@react-three/cannon';
+import { Physics } from '@react-three/cannon';
+import { Box } from './components/Box';
+import { Plane } from './components/Plane';
+import { Controls } from './components/Controls';
 
 import './App.css';
-
-
-function Box() {
-  // use canon hook
-  {/*
-      useBox is physics-only, it comes from the physics library 'cannon'.
-      It approximates a shape and links it to arbitrary geometry. The physics
-      engine now manages a literal box, a cube, and subjects it to gravity and other.
-      Pick a shape that suits your objects contact surface, it could be a box, plane, sphere, etc.
-      (if your shape resembles something like a sphere you'd use useSphere instead and so on.) 
-      Give it a mass.
-  */}
-  // get a ref to the physics box representation - use useBox() then give it a callback, from this callback
-  // we return an object that has props: position, mass (it will now be affected by gravity)
-   const [ref, api] = useBox(() => ({ 
-    mass: 1, 
-    position: [0, 12, 0]
-  }));
-
-  // Hold state for clicked and hovered
-  const [clicked, click] = useState(false);
-  const [hovered, hover] = useState(false);
-
-  return (
-    // define mesh - equivalent to new THREE.Mesh()
-    // tie mesh to the reference you have just received. It will now be affected by gravity 
-    // and other objects inside the physics world.
-    <mesh 
-      ref={ref}
-      position={[0, 12, 0]}
-      scale={clicked ? 3 : 1}
-      onClick={(e) => {
-        api.velocity.set(0, 10, 0);
-      }}
-      onContextMenu={(e) => click(!clicked)}
-      onPointerOver={(e) => hover(true)}
-      onPointerOut={(e) => hover(false)}
-    > 
-      <boxBufferGeometry attach='geometry' /> {/* define boxBufferGeometry */}
-      <meshLambertMaterial attach='material' color={ hovered ? 'darkblue' : 'darkred'} /> {/* define meshLambertMaterial */}
-    </mesh>
-  );
-}
-
-function Plane() {
-  // use canon hook
-  // get a ref to the physics plane representation - use usePlane() then give it a callback, from this callback
-  // we return an object that has props: rotation
-  const [ref] = usePlane(() => ({
-    rotation: [-Math.PI / 2, 0, 0]
-  }));
-
-  return (
-    // define mesh
-    // tie mesh to the reference you have just received. It will now be affected by gravity 
-    // and other objects inside the physics world.
-    <mesh 
-      ref={ref}
-      rotation={[-Math.PI / 2, 0, 0]}
-    >
-      <planeBufferGeometry attach='geometry' args={[100, 100]}/> {/* define planeBufferGeometry */}
-      <meshLambertMaterial attach='material' color='grey' /> {/* define meshLambertMaterial */}
-    </mesh>
-  );
-}
-
-function Controls() {
-  const [show, setShow] = useState(true);
-  const controls = [
-    {
-      action: 'Raise',
-      controls: 'LClick'
-    },
-    {
-      action: 'Size up',
-      controls: 'RClick'
-    },
-    {
-      action: 'Blue',
-      controls: 'Pointer over'
-    },
-    {
-      action: 'Red',
-      controls: 'Pointer out'
-    },
-  ];
-
-  return (
-    <div className={`absolute controls ${!show ? 'fixed-height' : ''}`}>
-      <h4>Controls</h4>
-
-      {controls.map(control => (
-        <div className="control" key={control.action}>
-          <p>{control.action}</p>
-          <p>{control.controls}</p>
-        </div>
-      ))}
-
-      <div className={`toggle ${show ? 'rotate' : ''}`} onClick={(e) => {
-        e.stopPropagation();
-        setShow(prev => !prev)
-      }}>&darr;</div>
-    </div>
-  );
-}
 
 function App() {
   const cameraConfig = { 
